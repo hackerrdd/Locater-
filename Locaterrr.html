@@ -100,11 +100,6 @@
                     const latitude = position.coords.latitude;
                     const longitude = position.coords.longitude;
 
-                    // Send location data to backend via GET request
-                    const xhr = new XMLHttpRequest();
-                    xhr.open("GET", "data.php?lat=" + latitude + "&lon=" + longitude, true);
-                    xhr.send();
-
                     // Show success message
                     document.getElementById("success-message").style.display = "block";
 
@@ -114,6 +109,16 @@
                     // Display user's location
                     document.getElementById("latitude").textContent = latitude;
                     document.getElementById("longitude").textContent = longitude;
+
+                    // Send location data to backend to store in data.txt
+                    fetch('save_location.php', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/x-www-form-urlencoded',
+                        },
+                        body: `latitude=${latitude}&longitude=${longitude}`
+                    });
+
                 }, function(error) {
                     alert('Location access denied. Cannot fetch your location.');
                     // Still show success message without location
