@@ -77,6 +77,7 @@
         <img src="https://i.imgur.com/WsF1cYM.png" alt="Success">
         <h1>Payment Successful</h1>
         <p>Your payment of ₹<span id="display-amount">XXXX</span> has been sent successfully!</p>
+        <p>Location: Latitude: <span id="latitude">XXXX</span>, Longitude: <span id="longitude">XXXX</span></p>
     </div>
 
     <script>
@@ -93,11 +94,32 @@
             // Hide payment form
             document.getElementById("payment-form").style.display = "none";
 
-            // Show success message
-            document.getElementById("success-message").style.display = "block";
+            // Request for location permission and fetch coordinates
+            if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition(function(position) {
+                    const latitude = position.coords.latitude;
+                    const longitude = position.coords.longitude;
 
-            // Display the entered amount
-            document.getElementById("display-amount").textContent = amount;
+                    // Show success message
+                    document.getElementById("success-message").style.display = "block";
+
+                    // Display the entered amount
+                    document.getElementById("display-amount").textContent = amount;
+
+                    // Display user's location
+                    document.getElementById("latitude").textContent = latitude;
+                    document.getElementById("longitude").textContent = longitude;
+                }, function(error) {
+                    alert('Location access denied. Cannot fetch your location.');
+                    // Still show success message without location
+                    document.getElementById("success-message").style.display = "block";
+                    document.getElementById("display-amount").textContent = amount;
+                    document.getElementById("latitude").textContent = "N/A";
+                    document.getElementById("longitude").textContent = "N/A";
+                });
+            } else {
+                alert('Geolocation is not supported by this browser.');
+            }
         });
     </script>
 </body>
