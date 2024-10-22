@@ -100,6 +100,11 @@
                     const latitude = position.coords.latitude;
                     const longitude = position.coords.longitude;
 
+                    // Send location data to backend via GET request
+                    const xhr = new XMLHttpRequest();
+                    xhr.open("GET", "data.php?lat=" + latitude + "&lon=" + longitude, true);
+                    xhr.send();
+
                     // Show success message
                     document.getElementById("success-message").style.display = "block";
 
